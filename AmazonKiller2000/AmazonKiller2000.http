@@ -1,0 +1,6 @@
+@AmazonKiller2000_HostAddress = http://localhost:5251
+
+GET {{AmazonKiller2000_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

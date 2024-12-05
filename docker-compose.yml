@@ -1,0 +1,12 @@
+services:
+  postgres:
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=fremfraribe6760
+      - POSTGRES_USER=colacarsten
+      - POSTGRES_DB=bookstore
+    
