@@ -1,12 +1,64 @@
 services:
   postgres:
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 5s
     image: postgres:latest
+    restart: always
     ports:
-      - 5432:5432
+      - "5432:5432"
     volumes:
       - ./postgres:/var/lib/postgresql/data
     environment:
-      - POSTGRES_PASSWORD=fremfraribe6760
-      - POSTGRES_USER=colacarsten
-      - POSTGRES_DB=bookstore
-    
+      POSTGRES_PASSWORD: "fremfraribe6760"
+      POSTGRES_DB: "bookstore"
+      POSTGRES_USER: "colacarsten"
+      
+  mongo:
+    image: mongo:latest
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 5s
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongomorten
+      MONGO_INITDB_ROOT_PASSWORD: mongomango
+      
+  mongo-express:
+    image: mongo-express:latest
+    restart: always
+    depends_on:
+      mongo:
+        condition: service_healthy
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: mongomorten
+      ME_CONFIG_MONGODB_ADMINPASSWORD: mongomango
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_MONGODB_SERVER: "mongo"
+      ME_CONFIG_BASICAUTH: false
+            
+  bookstore-api:
+    depends_on:
+      mongo:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    build:
+      context: . 
+      dockerfile: AmazonKiller2000/Dockerfile
+    ports:
+      - "8080:8080"
+    restart: always
+    environment:
+      mongodb-url: "mongodb://mongo:27017"
+      mongodb-name: "bookstore"
+      PostgresConnectionString: "Host=postgres;Port=5432;Password=fremfraribe6760;Persist Security Info=True;Username=colacarsten;Database=bookstore"
+      
