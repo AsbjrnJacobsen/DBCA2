@@ -3,22 +3,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AmazonKiller2000.Repositories;
 
-public class BookRepository(PostgresDBContext dbContext) : IRepository<Book>
+public class AuthorRepository(PostgresDBContext dbContext) : IRepository<Author>
 {
-    public async Task CreateAsync(Book entity)
+    public async Task CreateAsync(Author entity)
     {
-        await dbContext.Books.AddAsync(entity);
+        await dbContext.Authors.AddAsync(entity);
         await SaveAsync();
     }
 
-    public async Task<Book?> ReadAsync(int idNr)
+    public async Task<Author?> ReadAsync(int idNr)
     {
-        return await dbContext.Books.FindAsync(idNr);
+        return await dbContext.Authors.FindAsync(idNr);
     }
 
-    public async Task UpdateAsync(Book entity)
+    public async Task UpdateAsync(Author entity)
     {
-        dbContext.Books.Update(entity);
+        dbContext.Authors.Update(entity);
         await SaveAsync();
     }
 
@@ -27,7 +27,7 @@ public class BookRepository(PostgresDBContext dbContext) : IRepository<Book>
         await dbContext.Books.Select(b => b.ISBN == idNr).ExecuteDeleteAsync();
         await SaveAsync();
     }
-    
+
     public async Task SaveAsync()
     {
         await dbContext.SaveChangesAsync();
