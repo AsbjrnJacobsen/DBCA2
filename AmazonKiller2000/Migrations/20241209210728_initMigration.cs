@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AmazonKiller2000.Migrations
 {
     /// <inheritdoc />
-    public partial class initmigr : Migration
+    public partial class initMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -50,8 +50,7 @@ namespace AmazonKiller2000.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Books_AuthorId",
                 table: "Books",
-                column: "AuthorId",
-                unique: true);
+                column: "AuthorId");
         }
 
         /// <inheritdoc />

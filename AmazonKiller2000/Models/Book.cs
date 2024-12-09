@@ -11,7 +11,7 @@ public class Book
     public string Title { get; set; }
     [Required]
     public int AuthorId { get; set; }
-    [JsonInclude]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public virtual Author? Author { get; set; }
     [Required]
     public int StockLevel { get; set; }

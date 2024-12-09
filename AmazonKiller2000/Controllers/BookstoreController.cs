@@ -47,7 +47,7 @@ public class BookstoreController(BookRepository booksRepo, AuthorRepository auth
     public async Task<ActionResult<Author>> GetAuthor([FromQuery] int authorId)
     {
         var book = await authorsRepo.ReadAsync(authorId);
-        return book is null ? Ok(book) : NotFound();
+        return book is not null ? Ok(book) : NotFound();
     }
     
     [HttpPut("UpdateAuthor")]

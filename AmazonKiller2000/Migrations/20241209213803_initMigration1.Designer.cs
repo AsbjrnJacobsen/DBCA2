@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AmazonKiller2000.Migrations
 {
     [DbContext(typeof(PostgresDBContext))]
-    [Migration("20241209183044_initmigr")]
-    partial class initmigr
+    [Migration("20241209213803_initMigration1")]
+    partial class initMigration1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -68,8 +68,7 @@ namespace AmazonKiller2000.Migrations
 
                     b.HasKey("ISBN");
 
-                    b.HasIndex("AuthorId")
-                        .IsUnique();
+                    b.HasIndex("AuthorId");
 
                     b.ToTable("Books");
                 });
@@ -77,8 +76,8 @@ namespace AmazonKiller2000.Migrations
             modelBuilder.Entity("AmazonKiller2000.Models.Book", b =>
                 {
                     b.HasOne("AmazonKiller2000.Models.Author", "Author")
-                        .WithOne()
-                        .HasForeignKey("AmazonKiller2000.Models.Book", "AuthorId")
+                        .WithMany()
+                        .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

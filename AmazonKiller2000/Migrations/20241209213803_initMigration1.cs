@@ -5,7 +5,7 @@
 namespace AmazonKiller2000.Migrations
 {
     /// <inheritdoc />
-    public partial class initmigr2 : Migration
+    public partial class initMigration1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

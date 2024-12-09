@@ -13,7 +13,12 @@ public class BookRepository(PostgresDBContext dbContext) : IRepository<Book>
 
     public async Task<Book?> ReadAsync(int idNr)
     {
-        return await dbContext.Books.Include(b => b.Author).FirstAsync(b => b.ISBN == idNr);
+        if (await dbContext.Books.AnyAsync(b => b.ISBN == idNr))
+        {
+            var res = await dbContext.Books.Include(b => b.Author).FirstAsync(b => b.ISBN == idNr);
+            return res;
+        }
+        return null;
     }
 
     public async Task UpdateAsync(Book entity)
@@ -24,7 +29,11 @@ public class BookRepository(PostgresDBContext dbContext) : IRepository<Book>
 
     public async Task DeleteAsync(int idNr)
     {
-        await dbContext.Books.Select(b => b.ISBN == idNr).ExecuteDeleteAsync();
+        var book = await ReadAsync(idNr);
+        if (book is null)
+            return;
+        
+        dbContext.Books.Remove(book);
         await SaveAsync();
     }
     

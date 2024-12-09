@@ -65,8 +65,7 @@ namespace AmazonKiller2000.Migrations
 
                     b.HasKey("ISBN");
 
-                    b.HasIndex("AuthorId")
-                        .IsUnique();
+                    b.HasIndex("AuthorId");
 
                     b.ToTable("Books");
                 });
@@ -74,8 +73,8 @@ namespace AmazonKiller2000.Migrations
             modelBuilder.Entity("AmazonKiller2000.Models.Book", b =>
                 {
                     b.HasOne("AmazonKiller2000.Models.Author", "Author")
-                        .WithOne()
-                        .HasForeignKey("AmazonKiller2000.Models.Book", "AuthorId")
+                        .WithMany()
+                        .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

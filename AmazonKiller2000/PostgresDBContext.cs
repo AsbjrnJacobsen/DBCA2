@@ -29,14 +29,15 @@ public class PostgresDBContext : DbContext
 
         modelBuilder.Entity<Book>()
             .HasOne(book => book.Author)
-            .WithOne()
-            .HasForeignKey<Book>(book => book.AuthorId)
+            .WithMany()
+            .HasForeignKey(book => book.AuthorId)
             .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Author>(entity =>
         {
             entity.HasKey(a => a.Id);
-            entity.Property(a => a.Id).IsRequired();
+            entity.Property(a => a.Id)
+                .ValueGeneratedOnAdd().IsRequired();
             entity.Property(a=>a.FirstName).IsRequired();
             entity.Property(a => a.LastName).IsRequired();
         }); 

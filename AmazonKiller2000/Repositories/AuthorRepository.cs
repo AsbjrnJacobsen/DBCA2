@@ -13,7 +13,12 @@ public class AuthorRepository(PostgresDBContext dbContext) : IRepository<Author>
 
     public async Task<Author?> ReadAsync(int idNr)
     {
-        return await dbContext.Authors.FindAsync(idNr);
+        if (await dbContext.Authors.AnyAsync(b => b.Id == idNr))
+        {
+            var res = await dbContext.Authors.FirstAsync(b => b.Id == idNr);
+            return res;
+        }
+        return null;
     }
 
     public async Task UpdateAsync(Author entity)
@@ -24,7 +29,12 @@ public class AuthorRepository(PostgresDBContext dbContext) : IRepository<Author>
 
     public async Task DeleteAsync(int idNr)
     {
-        await dbContext.Books.Select(b => b.ISBN == idNr).ExecuteDeleteAsync();
+        var author = await ReadAsync(idNr);
+        
+        if (author is null)
+            return;
+        
+        dbContext.Authors.Remove(author);
         await SaveAsync();
     }
 
