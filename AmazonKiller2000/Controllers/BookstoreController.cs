@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AmazonKiller2000.Controllers;
 
 [ApiController]
+[Route("[controller]")]
 public class BookstoreController(BookRepository booksRepo, AuthorRepository authorsRepo) : ControllerBase
 {
     [HttpPost("CreateBook")]
@@ -18,7 +19,7 @@ public class BookstoreController(BookRepository booksRepo, AuthorRepository auth
     public async Task<ActionResult<Book>> GetBook([FromQuery] int bookId)
     {
         var book = await booksRepo.ReadAsync(bookId);        
-        return book is null ? Ok(book) : NotFound();
+        return book is not null ? Ok(book) : NotFound();
     }
     
     [HttpPut("UpdateBook")]

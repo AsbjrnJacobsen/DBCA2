@@ -12,7 +12,7 @@ public class Book
     [Required]
     public int AuthorId { get; set; }
     [JsonInclude]
-    public virtual Author Author { get; set; }
+    public virtual Author? Author { get; set; }
     [Required]
     public int StockLevel { get; set; }
     [Required]

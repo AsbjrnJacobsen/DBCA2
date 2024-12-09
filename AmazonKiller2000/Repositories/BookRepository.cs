@@ -13,7 +13,7 @@ public class BookRepository(PostgresDBContext dbContext) : IRepository<Book>
 
     public async Task<Book?> ReadAsync(int idNr)
     {
-        return await dbContext.Books.FindAsync(idNr);
+        return await dbContext.Books.Include(b => b.Author).FirstAsync(b => b.ISBN == idNr);
     }
 
     public async Task UpdateAsync(Book entity)

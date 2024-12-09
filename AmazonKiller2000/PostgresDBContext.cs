@@ -22,21 +22,24 @@ public class PostgresDBContext : DbContext
             entity.Property(b => b.ISBN).IsRequired();
             entity.Property(b => b.Title).IsRequired();
             entity.Property(b => b.AuthorId).IsRequired();
+            
             entity.Property(b => b.StockLevel).IsRequired();
+            
         });
-        
+
         modelBuilder.Entity<Book>()
-            .HasOne(author => author.Author)
+            .HasOne(book => book.Author)
             .WithOne()
-            .HasForeignKey<Book>(author => author.AuthorId);
+            .HasForeignKey<Book>(book => book.AuthorId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Author>(entity =>
         {
             entity.HasKey(a => a.Id);
-            entity.Property(a => a.Id);
+            entity.Property(a => a.Id).IsRequired();
             entity.Property(a=>a.FirstName).IsRequired();
             entity.Property(a => a.LastName).IsRequired();
-        });
+        }); 
 
     }
 

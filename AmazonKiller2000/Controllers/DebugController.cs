@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AmazonKiller2000.Controllers;
 
 [ApiController]
+[Route("[controller]")]
 public class DebugController(IHostEnvironment env, IConfiguration configuration) : ControllerBase
 {
     [HttpGet("IsOnline")]
