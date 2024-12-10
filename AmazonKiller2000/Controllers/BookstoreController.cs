@@ -38,7 +38,6 @@ public class BookstoreController(
     {
         await booksRepo.UpdateAsync(book);
         booksCache.RemoveBook(book.ISBN.ToString());
-        booksCache.StoreBook(book);
         return Ok();
     }
     
@@ -75,7 +74,6 @@ public class BookstoreController(
     {
         await authorsRepo.UpdateAsync(author);
         authorsCache.RemoveAuthor(author.Id);
-        authorsCache.StoreAuthor(author);
         return Ok();
     }
     
