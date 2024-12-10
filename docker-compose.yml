@@ -17,6 +17,18 @@ services:
       POSTGRES_DB: "bookstore"
       POSTGRES_USER: "colacarsten"
       
+  redis:
+    image: redis:alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis:/root/redis
+    environment:
+      REDIS_PASSWORD: "my-redis-password"
+      REDIS_PORT: 6379
+      REDIS_DATABASES: 16
+
   mongo:
     image: mongo:latest
     healthcheck:
@@ -58,9 +70,12 @@ services:
       - "8080:8080"
     restart: always
     environment:
+      redis-host: "redis"
+      redis-password: "my-redis-password"
       mongodb-url: "mongodb://mongo:27017"
       mongodb-name: "bookstore"
       PostgresConnectionString: "Host=postgres;Port=5432;Password=fremfraribe6760;Persist Security Info=True;Username=colacarsten;Database=bookstore"
       
 volumes:
   postgres:
+  redis:
