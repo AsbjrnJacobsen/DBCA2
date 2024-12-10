@@ -7,7 +7,8 @@ public class Order
     [Key]
     public int Id { get; set; }
     [Required]
-    public List<Book> Items { get; set; } = new();
+    public List<int> Items { get; set; } = [];
+
     [Required]
     public int TotalPrice { get; set; }
     [Required]

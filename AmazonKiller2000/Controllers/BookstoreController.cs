@@ -11,8 +11,11 @@ public class BookstoreController(
     BookRepository booksRepo, 
     BookCacheRepository booksCache, 
     AuthorRepository authorsRepo, 
-    AuthorCacheRepository authorsCache) : ControllerBase
+    AuthorCacheRepository authorsCache,
+    CustomerRepository customersRepo,
+    OrderRepository ordersRepo) : ControllerBase
 {
+    // Books
     [HttpPost("CreateBook")]
     public async Task<ActionResult> CreateBook([FromBody] Book book)
     {
@@ -49,6 +52,7 @@ public class BookstoreController(
         return Ok();
     }
     
+    // Authors
     [HttpPost("CreateAuthor")]
     public async Task<ActionResult> CreateAuthor([FromBody] Author author)
     {
@@ -82,6 +86,66 @@ public class BookstoreController(
     {
         await authorsRepo.DeleteAsync(authorId);
         authorsCache.RemoveAuthor(authorId);
+        return Ok();
+    }
+    
+    // Customers
+    [HttpPost("CreateCustomer")]
+    public async Task<ActionResult> CreateCustomer([FromBody] Customer customer)
+    {
+        await customersRepo.CreateAsync(customer);
+        return Ok();
+    }
+    
+    [HttpGet("GetCustomer")]
+    public async Task<ActionResult<Customer>> GetCustomer([FromQuery] int customerId)
+    {
+        var customer = await customersRepo.ReadAsync(customerId);
+        if (customer is null) return NotFound();
+        return Ok(customer);
+    }
+    
+    [HttpPut("UpdateCustomer")]
+    public async Task<ActionResult> UpdateCustomer([FromBody] Customer customer)
+    {
+        await customersRepo.UpdateAsync(customer);
+        return Ok();
+    }
+    
+    [HttpDelete("DeleteCustomer")]
+    public async Task<ActionResult> DeleteCustomer([FromQuery] int customerId)
+    {
+        await customersRepo.DeleteAsync(customerId);
+        return Ok();
+    }
+    
+    // Orders
+    [HttpPost("CreateOrder")]
+    public async Task<ActionResult> CreateOrder([FromBody] Order order)
+    {
+        await ordersRepo.CreateAsync(order);
+        return Ok();
+    }
+    
+    [HttpGet("GetOrder")]
+    public async Task<ActionResult<Order>> GetOrder([FromQuery] int orderId)
+    {
+        var order = await ordersRepo.ReadAsync(orderId);
+        if (order is null) return NotFound();
+        return Ok(order);
+    }
+    
+    [HttpPut("UpdateOrder")]
+    public async Task<ActionResult> UpdateOrder([FromBody] Order order)
+    {
+        await ordersRepo.UpdateAsync(order);
+        return Ok();
+    }
+    
+    [HttpDelete("DeleteOrder")]
+    public async Task<ActionResult> DeleteOrder([FromQuery] int orderId)
+    {
+        await ordersRepo.DeleteAsync(orderId);
         return Ok();
     }
 }

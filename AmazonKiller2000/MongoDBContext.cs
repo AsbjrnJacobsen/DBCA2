@@ -25,12 +25,27 @@ public class MongoDBContext
         return _client.GetDatabase(_databaseName).GetCollection<T>((typeof(T).Name));
     }
 
-    public void ApplyDataSeed()
+    public async void ApplyDataSeed()
     {
-        var customerCollection = _client.GetDatabase(_databaseName).GetCollection<Customer>(nameof(Customer));
-        Customer c1 = new Customer{Name = "John Johnson", Email = "john.johnson@gmail.com", Telephone = 12345678, Address = "Johnsonstreet 42",};
+        // Drop database seed in case it has already been applied
+        await _client.DropDatabaseAsync(_databaseName);
         
+        // Customers
+        var customerCollection = _client.GetDatabase(_databaseName).GetCollection<Customer>(nameof(Customer));
+        
+        Customer c1 = new Customer{ Id = 1, Name = "John Johnson", Email = "john.johnson@gmail.com", Telephone = 12345678, Address = "Johnsonstreet 42" };
+        Customer c2 = new Customer{ Id = 2, Name = "Jane Doe", Email = "janedoe@mail.com", Telephone = 12345678, Address = "Green Aveneue 14" };
+        
+        await customerCollection.InsertOneAsync(c1);
+        await customerCollection.InsertOneAsync(c2);
+        
+        // Orders
         var orderCollection = _client.GetDatabase(_databaseName).GetCollection<Order>(nameof(Order));
         
+        Order o1 = new Order() { Id = 1, CustomerId = c1.Id, IsPaid = true, Items = [1, 2, 3, 4], TotalPrice = 400 };
+        Order o2 = new Order() { Id = 2, CustomerId = c2.Id, IsPaid = false, Items = [5, 6], TotalPrice = 250 };
+        
+        await orderCollection.InsertOneAsync(o1);
+        await orderCollection.InsertOneAsync(o2);
     }
 }

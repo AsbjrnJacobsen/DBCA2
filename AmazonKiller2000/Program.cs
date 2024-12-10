@@ -31,6 +31,7 @@ builder.Services.AddTransient<AuthorCacheRepository>();
 
 var app = builder.Build();
 
+// Apply migrations from datamodel to postgres
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -42,6 +43,16 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
+// Apply mongo DB database seed
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<MongoDBContext>();
+
+    context.ApplyDataSeed();
+}
+
+// Swagger
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

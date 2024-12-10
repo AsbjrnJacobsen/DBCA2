@@ -72,7 +72,7 @@ services:
     environment:
       redis-host: "redis"
       redis-password: "my-redis-password"
-      mongodb-url: "mongodb://mongo:27017"
+      mongodb-url: "mongodb://mongomorten:mongomango@mongo:27017"
       mongodb-name: "bookstore"
       PostgresConnectionString: "Host=postgres;Port=5432;Password=fremfraribe6760;Persist Security Info=True;Username=colacarsten;Database=bookstore"
       
