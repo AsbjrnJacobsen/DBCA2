@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AmazonKiller2000.Migrations
 {
     [DbContext(typeof(PostgresDBContext))]
-    [Migration("20241209213803_initMigration1")]
-    partial class initMigration1
+    [Migration("20241210104855_Initial Migrations")]
+    partial class InitialMigrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
